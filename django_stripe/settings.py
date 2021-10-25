@@ -119,3 +119,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
 STATIC_URL = '/static/'
+
+STRIPE_PUBLIC_KEY = "pk_test_51JoXKwG9cGd6yAftUu9jrfqI0LO2yDcwPXUFLHqaspxVDa6c084UnDvaUphfiG6NVOBcpFGOKkVQtObMh9OyVhA000C7SpBxs9"
+STRIPE_SECRET_KEY = "sk_test_51JoXKwG9cGd6yAftSdpQnzzFCXsu0FM10o0ciAP18A3i15DcTmVr5alTJdRb7Ve0BTPW3FwWET4HH2pqyDwvbdlZ00KiaeWRqI"
+STRIPE_WEBHOOK_SECRET = ""
