@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'app',
     'stripe_monthly',
+    'courses',
 ]
 
 MIDDLEWARE = [
