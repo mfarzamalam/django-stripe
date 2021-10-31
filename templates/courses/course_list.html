@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>All Courses</title>
+</head>
+<body>
+
+    <div style="text-align:center; text-transform:capitalize;">
+        <h1>All The Courses</h1>
+
+        {% for course in object_list %}
+            {{forloop.counter}}) <a href=" {{course.get_absolute_url}} "> {{course.slug}} </a>
+            <br>
+        {% endfor %}
+
+
+    </div>    
+
+
+</body>
+</html>
