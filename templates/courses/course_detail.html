@@ -15,9 +15,15 @@
         <p> <b>Slug:-</b> {{object.slug}} </p> 
         <p> <b>Title:-</b> {{object.title}} </p> 
         <p> <b>Description:-</b> {{object.description}} </p>
-        <b> {{object.allowed_membership}} </b>
-        <br>
-
+        
+        {% if object.lessons %}    
+            {% for lesson in object.lessons %}
+                <a href=" {{lesson.get_absolute_url}} "> {{lesson.slug|title}} </a>
+                <br>
+            {% endfor %}
+        {% else %}
+            <p> <b>No Lesson available</b> </p>
+        {% endif %}
     </div>    
 
 
