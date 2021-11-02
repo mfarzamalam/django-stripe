@@ -13,23 +13,29 @@ class CreateCheckoutSession(View):
         product_id = self.kwargs['pk']
         product = Product.objects.get(pk=product_id)
         product_stripe = stripe.Product.create(name=product.name)
-        print("Product", product_stripe)
 
         YOUR_DOMAIN = 'http://127.0.0.1:8000/'
         checkout_session = stripe.checkout.Session.create(
+            customer_email=self.request.user.email,
+            # submit_type='donate',
+            billing_address_collection='auto',
+            shipping_address_collection={
+              'allowed_countries': ['US', 'CA'],
+            },
+
             line_items=[
                 {
                     'price': stripe.Price.create(
                             unit_amount=product.price*100,
                             currency="usd",
-                            recurring={"interval": "month"},
+                            # recurring={"interval": "month"},
                             product=product_stripe,
                             ),
                     'quantity': 1,
                 },
             ],
             payment_method_types=['card',],
-            mode='subscription',
+            mode='payment',
             success_url=YOUR_DOMAIN + 'app/success/',
             cancel_url=YOUR_DOMAIN + 'cancel/',
         )
