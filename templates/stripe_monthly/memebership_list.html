@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stripe Payment Checkout</title>
+</head>
+<body>
+    
+    <div style="text-align:center; text-transform:capitalize;">
+        <h1>Select a Membership</h1>
+
+        {% for object in object_list %}
+
+            <a> {{object.membership_type}} - ${{object.price}}.00 </a> <br>
+
+            <form action="" method="POST">
+                {% csrf_token %}
+
+       
+                {% if object.membership_type != current_membership %}
+                    <button class="btn btn-warning">Select</button>
+                {% else %}
+                    <small style="color:red;">This is your current membership</small>
+                {% endif %}
+                    
+
+                <input type="hidden" name="membership_type" value="{{object.membership_type}}">
+                <input type="hidden" name="membership_price" value="{{object.price}}">
+            </form>
+
+            <br>
+
+        {% endfor %}
+
+    </div>    
+
+</body>
+</html>
