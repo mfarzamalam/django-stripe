@@ -1,12 +1,13 @@
-from django import http
-from django.contrib.auth.models import User
-from django.db import models
 from django.http import request, HttpResponseRedirect
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.views.generic import ListView
 from .models import Memebership, UserMembership, Subscription
 from django.contrib import messages
 from django.urls import reverse
+from django.conf import settings
+import stripe
+from django.views import View
+
 
 
 def get_user_membership(request):
@@ -64,3 +65,51 @@ class MembershipSelectView(ListView):
         request.session['selected_membership_type'] = selected_membership.membership_type
 
         return HttpResponseRedirect(reverse('payment'))
+
+
+
+def PaymentView(request):
+    selected_membership = request.POST.get('membership_type')
+    user_membership = Memebership.objects.filter(membership_type=selected_membership).first()
+    membership_price    = request.POST.get('membership_price')
+
+    publish_key = settings.STRIPE_SECRET_KEY    
+    context = {
+        'publish_key':publish_key,
+        's_m':  selected_membership,
+        'membership_price': membership_price,
+        'price_id' : user_membership.stripe_plan_id,
+    }
+
+    return render(request, "stripe_monthly/membership_payment.html", context)
+
+
+# 4000 0025 0000 3155
+class CreateCheckoutSession(View):
+    def post(self, request, *args, **kwargs):
+        YOUR_DOMAIN = 'http://127.0.0.1:8000/'
+        price_id = request.POST.get('price_id')
+        retrieve_price = stripe.Price.retrieve(
+              str(price_id),
+        )
+
+        checkout_session = stripe.checkout.Session.create(
+            payment_method_types=['card'],
+            line_items=[
+                {
+                    'price': retrieve_price,
+                    'quantity': 1,
+                },
+            ],
+            mode='subscription',
+            success_url=YOUR_DOMAIN +
+            'success.html?session_id={CHECKOUT_SESSION_ID}',
+            cancel_url=YOUR_DOMAIN + '/cancel.html',
+        )
+        print("\nSuccess url")
+        print(checkout_session.success_url)
+        print("\nCancel url")
+        print(checkout_session.cancel_url)
+        print("\nCheckout Session")
+        print(checkout_session)
+        return redirect(checkout_session.url, code=303)

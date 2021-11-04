@@ -15,7 +15,7 @@
 
             <a> {{object.membership_type}} - ${{object.price}}.00 </a> <br>
 
-            <form action="" method="POST">
+            <form action="{% url 'payment' %}" method="POST">
                 {% csrf_token %}
 
        

@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Subscribe to a cool new product</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://polyfill.io/v3/polyfill.min.js?version=3.52.1&features=fetch"></script>
+    <script src="https://js.stripe.com/v3/"></script>
+  </head>
+  <body>
+  <br>
+    <section style="text-align:center;">
+      <div class="product" >
+        
+        <div class="description">
+          <h3>Selected Membership: <b>{{s_m}}</b</h3>
+          <h5>Price: <b>${{membership_price}}/month</h5>
+        </div>
+      </div>
+        <form action="{% url 'checkout' %}" method="POST">
+          {% csrf_token %}
+          <input type="hidden" name="price_id" value="{{price_id}}" />
+          <button id="checkout-and-portal-button" type="submit">Checkout</button>
+        </form>
+    </section>
+  </body>
+</html>
